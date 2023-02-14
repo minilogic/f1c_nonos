@@ -32,3 +32,4 @@ Low-level framework is simple, but provides the following features:
 
 **Disclaimer:**
 The Software is furnished "AS IS", without warranty as to performance or results, and the entire risk as to performance or results is assumed by YOU. I disclaims all warranties, express, implied or otherwise, with regard to the Software, its use, or operation, including without limitation any and all warranties of merchantability, fitness for a particular purpose, and non-infringement of intellectual property rights.
+
