@@ -15,3 +15,4 @@ In my version, you can control the wave through the terminal (UART0 115200).
 | `7` | Dot size increase            |
 | `1` | Dot size decrease            |
 | `*` | Reset offsets on all axes    |
+
