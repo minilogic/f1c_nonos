@@ -16,3 +16,4 @@ In my version, you can control the wave through the terminal (UART0 115200).
 | `1` | Dot size decrease            |
 | `*` | Reset offsets on all axes    |
 
+https://user-images.githubusercontent.com/108269914/218890992-2c658f40-d564-4b04-8a72-07c4812a97f9.mp4
