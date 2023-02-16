@@ -8,7 +8,7 @@ CC      = arm-none-eabi-
 CFLAGS  += $(addprefix -I,$(DIRS)) -c -O3 -mcpu=arm926ej-s \
 	-ffunction-sections -fdata-sections \
 	-MMD -MT$@ -Wall -Wformat=0 -DARM
-LFLAGS	= -Xlinker --gc-sections -Wl,-Map,$(NAME).map -T$(BASE)drv/
+LFLAGS	+= -lm -Xlinker --gc-sections -Wl,-Map,$(NAME).map -T$(BASE)drv/
 FEL	= "$(BASE)tools\sunxi\sunxi-fel"
 MKSUNXI	= "$(BASE)tools\sunxi\mksunxi"
 
@@ -16,7 +16,7 @@ MKSUNXI	= "$(BASE)tools\sunxi\mksunxi"
 
 all:	out $(BOOT).bin  $(NAME).bin
 	$(CC)size -G out/*.elf
-run:    #all
+run:	#all
 	$(FEL) -p spl $(BOOT).bin
 	$(FEL) -p write 0x80000000 $(NAME).bin
 	$(FEL) exec 0x80000000
@@ -26,7 +26,7 @@ flash:	#all
 $(NAME).bin: $(NAME).elf
 	$(CC)objcopy -O binary $^ $@
 $(NAME).elf: $(OBJS)
-	$(CC)gcc $^ -o$@ --specs=rdimon.specs --specs=nano.specs -lm $(LFLAGS)link.ld
+	$(CC)gcc $^ -o$@ --specs=rdimon.specs $(LFLAGS)link.ld
 $(BOOT).bin: $(BOOT).elf
 	$(CC)objcopy -O binary $^ $@
 	$(MKSUNXI) $@ 1>&0
@@ -42,4 +42,3 @@ clean:
 	rm -fr out
 
 -include $(patsubst %.o,%.d,$(OBJS))
-
