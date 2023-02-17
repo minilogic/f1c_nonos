@@ -1,6 +1,6 @@
 # Bare metal code examples for Allwinner's F1C100S (F1C200S) SOC
 
-These examples work without any operating system environment. It's like programming simple microcontrollers or "old school" programming techniques. Examples can be used for educational purposes to teach low-level programming. All programs can be run on [f1c_dbc](https://github.com/minilogic/f1c_dbc) computer or [Lichee Nano](https://linux-sunxi.org/LicheePi_Nano) demoboard.
+These examples work without any operating system environment. It's like programming simple microcontrollers or "old school" programming techniques. Examples can be used for educational purposes to teach low-level programming. All programs can be run on [f1c_dbc](https://github.com/minilogic/f1c_dbc) computer or [LicheePi Nano](https://linux-sunxi.org/LicheePi_Nano) demoboard.
 Low-level framework is simple, but provides the following features:
 - work with graphic display modules: TV, TFT, HDMI (work in progress);
 - examples of working with communication interfaces: UART, SPI, I2C;
