@@ -16,3 +16,5 @@ Control is possible through the terminal (UART0 115200).
 | `9` | Disable/enable polygon mode  |
 | `1` | Decrease speed               |
 | `3` | Increase speed               |
+
+https://user-images.githubusercontent.com/108269914/220209089-94990dbb-acf1-4044-a514-f5a416eedc5f.mp4
