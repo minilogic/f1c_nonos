@@ -33,7 +33,7 @@ extern struct DISP TFT_800x480;
 
 int disp_init (struct DISP *cfg, u32 bg);
 u8 disp_backlight (u8 x);
-void disp_sinc (void);
+void disp_sync (void);
 
 void lay_config (int i, int width, int height, int posx, int posy, int stride,
                 void *addr, int attr0, int attr1);

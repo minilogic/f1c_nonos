@@ -142,7 +142,7 @@ u8 disp_backlight (u8 x)
   return x;
 }
 
-void disp_sinc (void)
+void disp_sync (void)
 {
   u32 shift = display->ctrl < 2 ? 28 : 29, dbg = TCON->DBG_INFO & (1 << shift);
   while(dbg == (TCON->DBG_INFO & (1 << shift))) {};
