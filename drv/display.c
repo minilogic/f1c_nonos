@@ -7,7 +7,7 @@ struct DISP *display;
 
 struct DISP TV_PAL  = { 720, 576, 625, 21, 864, 141, 0x81006207, 0, 0, 0 };
 struct DISP TV_NTSC = { 720, 480, 525, 19, 858, 120, 0x81006207, 0, 0, 1 };
-struct DISP TFT_800x480 = { 800, 480, 2, 23, 4, 46, 0x81004107, 5, 0, 2 }; // 198 / 6 = 33.0MHz
+struct DISP TFT_800x480 = { 800, 480, 2, 64, 2, 194, 0x81004107, 6, 0, 2 };
 
 int disp_init (struct DISP *cfg, u32 bg)
 {
@@ -117,9 +117,9 @@ int disp_init (struct DISP *cfg, u32 bg)
       TCON->T0_CTRL = (1UL << 31) | (1UL << 21) | ((cfg->vbp + cfg->vsp) << 4);
       TCON->T0_CLK = (1UL << 28) | cfg->div;
       TCON->T0_TIMING[0] = ((cfg->width - 1) << 16) | (cfg->height - 1);
-      TCON->T0_TIMING[1] = ((cfg->width + cfg->hbp + cfg->hsp - 1) << 16) | (cfg->hbp - 1);
-      TCON->T0_TIMING[2] = ((cfg->height + cfg->vbp + cfg->vsp) << 17) | (cfg->vbp - 1);
-      TCON->T0_TIMING[3] = ((cfg->hsp - 1) << 16) | (cfg->vsp - 1);
+      TCON->T0_TIMING[1] = ((cfg->width + cfg->hbp + cfg->hsp) << 16) | (cfg->hbp);
+      TCON->T0_TIMING[2] = ((cfg->height + cfg->vbp + cfg->vsp) << 17) | (cfg->vbp);
+      TCON->T0_TIMING[3] = ((cfg->hsp) << 16) | (cfg->vsp);
       TCON->T0_HV_TIMING = 0;
       TCON->T0_CPU_IF = 0;
       TCON->T0_IO_CTRL[0] = cfg->inv << 24;
@@ -144,10 +144,14 @@ u8 disp_backlight (u8 x)
 
 void disp_sync (void)
 {
+  #if 1
+  u32 mask = display->ctrl < 2 ? 1 << 14 : 1 << 15;
+  for(TCON->INT0 = 0; !(TCON->INT0 & mask); ) {};
+  #else
   u32 shift = display->ctrl < 2 ? 28 : 29, dbg = TCON->DBG_INFO & (1 << shift);
   while(dbg == (TCON->DBG_INFO & (1 << shift))) {};
+  #endif
 }
-
 
 void lay_config (int i, int width, int height, int posx, int posy, int stride,
                 void *addr, int attr0, int attr1)
