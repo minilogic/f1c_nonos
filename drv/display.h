@@ -11,7 +11,7 @@ struct DISP {
   u32 pll;        // PLL_VIDEO_CTRL
   u8  div;        // DCLKDIV: dot clock divider
   u8  inv;        // IO_CTRL_0 (1-invert)
-  u16 ctrl;       // 0/1: tft/tv
+  u16 ctrl;       // 0-tv_pal, 1-tv_ntsc, 2-tft
 };
 
 struct LAY {
