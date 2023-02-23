@@ -36,7 +36,7 @@ int disp_init (struct DISP *cfg, u32 bg)
       TCON->T1_TIMING[2] = ((cfg->width - 1) << 16) | (cfg->height / 2 - 1);
       TCON->T1_TIMING[3] = ((cfg->hsp - 1) << 16) | (cfg->hbp - 1);
       TCON->T1_TIMING[4] = (cfg->vsp << 16) | (cfg->vbp - 1);
-      if(!cfg->height)
+      if(!cfg->ctrl)
       { // PAL
         TVE->CFG1 = 0x07030001;
         TVE->CHROMA_FREQ = 0x2A098ACB;
