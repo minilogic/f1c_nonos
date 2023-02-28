@@ -4,6 +4,7 @@
 #include "f1c100s.h"
 #include "display.h"
 #include "spi.h"
+#include "sd.h"
 
 #define ctr_us  (TIM->AVS_CNT0)
 #define ctr_ms  (TIM->AVS_CNT1)
@@ -24,5 +25,8 @@ void dev_enable (int state);
 
 enum LED_STATE { LED_DISABLE, LED_ENABLE, LED_TOGGLE };
 void led_set (enum LED_STATE state);
+
+void disk_init ( u8 pdrv, int (*cbrd) (void *ptr, u32 addr, u32 cnt),
+  int (*cbwr) (void *ptr, u32 addr, u32 cnt));
 
 #endif
