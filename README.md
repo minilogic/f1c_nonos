@@ -13,16 +13,17 @@ Low-level framework is simple, but provides the following features:
 ![log](./doc/img/intro.jpg)
 **Project directories:**
 
-| Name                         | Description                                |
-|------------------------------|--------------------------------------------|
-| [doc](./doc)                 | Documentation                              |
-| [drv](./drv)                 | Low-level drivers                          |
-| [lib](./lib)                 | Third-party libraries                      |
-| [src/demo](./src/demo)       | Classical demo effects                     |
-| [src/lvgl](./src/lvgl)       | LVGL GUI-demo                              |
-| [src/tinygl](./src/tinygl)   | TinyGl 3D-demo examples                    |
-| [tools/sunxi](./tools/sunxi) | Tools for loading and flashing the SOC     |
-| [tools/zadig](./tools/zadig) | Windows tool for installing SOC-driver     |
+| Name                             | Description                                |
+|----------------------------------|--------------------------------------------|
+| [doc](./doc)                     | Documentation                              |
+| [drv](./drv)                     | Low-level drivers                          |
+| [lib](./lib)                     | Third-party libraries                      |
+| [src/demo](./src/demo)           | Classical demo effects                     |
+| [src/lvgl](./src/lvgl)           | LVGL GUI-demo                              |
+| [src/tinygl](./src/tinygl)       | TinyGl 3D-demo examples                    |
+| [src/slideshow](./src/slideshow) | µSD & FatFs example (JPG-slideshow)        |
+| [tools/sunxi](./tools/sunxi)     | Tools for loading and flashing the SOC     |
+| [tools/zadig](./tools/zadig)     | Windows tool for installing SOC-driver     |
 
 **Useful links:**
 1. [XBOOT](https://github.com/xboot/xboot)
