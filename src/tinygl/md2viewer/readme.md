@@ -7,6 +7,8 @@ Control is possible through the terminal (UART0 115200).
 
 | Key | Control                      |
 |-----|------------------------------|
+| `+` | Zoom in                      |
+| `-` | Zoom out                     |
 | `4` | X-axis rotation to the left  |
 | `6` | X-axis rotation to the right |
 | `8` | Move up                      |
