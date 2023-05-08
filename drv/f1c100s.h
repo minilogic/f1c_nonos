@@ -2,6 +2,7 @@
 #define F1C100S_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define u8  uint8_t
 #define u16 uint16_t
@@ -290,8 +291,6 @@ typedef struct {
 } ADC_T;
 #define ADC ((ADC_T*)0x01C23400)
 
-
-
 /* TVE */
 typedef struct {
   __IO  u32 ENABLE;         // 0x000
@@ -406,8 +405,6 @@ typedef struct {
   __IO  u32 CH1_V_COEF[32]; // 0x700 CH1 Vertical Filter Coefficient
 } DEFE_T;
 #define DEFE ((DEFE_T*)0x01E00000)
-
-
 
 /* DEBE */
 typedef struct {
@@ -685,6 +682,57 @@ typedef struct {
 } AVC_T;
 #define AVC ((AVC_T*)0x01C0EB04)
 
-
+/* MUSB */
+typedef struct {
+  union {                   // 0x00..0x3F FIFO_0..FIFO_15 (8b,16b,32b access)
+    __IO  u32 word32;
+    __IO  u16 word16;
+    __IO  u8 byte;
+  } FIFO[16];
+  __IO  u8  POWER;          // 0x40 Power management
+  __IO  u8  DEVCTL;         // 0x41 OTG device control
+  __IO  u8  EP_IDX;         // 0x42 Index for selecting endpoint
+  __IO  u8  VEND0;          // 0x43 Controls whether to use DMA mode
+  __IO  u32 EP_IS;          // 0x44 EP interrupt status (RX-high, TX-low)
+  __IO  u32 EP_IE;          // 0x48 EP interrupt enable (RX-high, TX-low)
+  __IO  u32 BUS_IS;         // 0x4C USB interrupt status (1-byte)
+  __IO  u32 BUS_IE;         // 0x50 USB interrupt enable (1-byte)
+  __IO  u32 FRAME;          // 0x54 USB frame number
+  __IO  u32 res0[10];
+  // EP control regs (indexed)
+  __IO  u16 TXMAXP;         // 0x80
+  __IO  u16 TXCSR;          // 0x82
+  __IO  u16 RXMAXP;         // 0x84
+  __IO  u16 RXCSR;          // 0x86
+  __IO  u16 RXCOUNT;        // 0x88
+  __IO  u16 res1;           // 0x8A
+  __IO  u8  TXTYPE;         // 0x8C
+  __IO  u8  TXINTERVAL;     // 0x8D
+  __IO  u8  RXTYPE;         // 0x8E
+  __IO  u8  RXINTERVAL;     // 0x8F
+  // FIFO control regs (indexed)
+  __IO  u16 TXFIFOSZ;       // 0x90 TX endpoint FIFO size (2 ^ (size + 3))
+  __IO  u16 TXFIFOADDR;     // 0x92 TX endpoint FIFO address (offset / 8)
+  __IO  u16 RXFIFOSZ;       // 0x94 RX endpoint FIFO size (2 ^ (size + 3))
+  __IO  u16 RXFIFOADDR;     // 0x96 RX endpoint FIFO address (offset / 8)
+  // Multipoint / busctl regs (indexed)
+  __IO  u8  TXFUNCADDR;     // 0x98 Function address register
+  __IO  u8  res4;           // 0x99
+  __IO  u8  TXHUBADDR;      // 0x9A
+  __IO  u8  TXHUBPORT;      // 0x9B
+  __IO  u8  RXFUNCADDR;     // 0x9C
+  __IO  u8  res5;           // 0x9D
+  __IO  u8  RXHUBADDR;      // 0x9E
+  __IO  u8  RXHUBPORT;      // 0x9F
+  __IO  u8  res6[32];
+  // configdata regs
+  __IO  u8  CONFIGDATA;     // 0xc0
+  __IO  u8  res7[831];
+  __IO  u32 ISCR;           // 0x400
+  __IO  u32 PHYCTL;         // 0x404 (v3s @ 0x410)
+  __IO  u32 PHYBIST;        // 0x408
+  __IO  u32 PHYTUNE;        // 0x40c
+} USB_T;
+#define USB ((USB_T*)0x01C13000)
 
 #endif /* __F1C100S_H__ */

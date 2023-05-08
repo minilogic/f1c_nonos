@@ -23,6 +23,8 @@ run:	#all
 flash:	#all
 	$(FEL) -p spiflash-write 0 $(BOOT).bin
 	$(FEL) -p spiflash-write 4096 $(NAME).bin
+build:	clean all
+	rm -fr out/*.d* out/*.e* out/*.m* out/*.o*
 $(NAME).bin: $(NAME).elf
 	$(CC)objcopy -O binary $^ $@
 $(NAME).elf: $(OBJS)
