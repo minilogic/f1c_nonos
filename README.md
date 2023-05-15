@@ -23,6 +23,7 @@ Low-level framework is simple, but provides the following features:
 | [src/tinygl](./src/tinygl)       | TinyGl 3D-demo examples                    |
 | [src/slideshow](./src/slideshow) | µSD & FatFs example (JPG-slideshow)        |
 | [src/usbd](./src/usbd)           | USB-device examples                        |
+| [src/usbh](./src/usbh)           | USB-host examples                          |
 | [tools/sunxi](./tools/sunxi)     | Tools for loading and flashing the SOC     |
 | [tools/zadig](./tools/zadig)     | Windows tool for installing SOC-driver     |
 
