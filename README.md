@@ -10,7 +10,8 @@ Low-level framework is simple, but provides the following features:
 - bootloader implementation from SPI-flash memory;
 - examples of integrating third-party libraries: FatFs, LVGL, LWIP, TinyGL, MP3 Decoder/Encoder...
 
-![log](./doc/img/intro.jpg)
+![intro](https://github.com/minilogic/f1c_nonos/assets/108269914/28806b5c-5cea-4a52-84ff-2061686fc2ee)
+
 **Project directories:**
 
 | Name                             | Description                                |
