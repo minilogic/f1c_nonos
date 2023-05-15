@@ -12,3 +12,4 @@ all:
 	$(MK) src/tinygl/md2viewer
 	$(MK) src/tinygl/wave
 	$(MK) src/usbd/msc
+	$(MK) src/usbh/msc
