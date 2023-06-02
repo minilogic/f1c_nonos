@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <malloc.h>
 #include "sys.h"
-#include "usbh.h"
 #include "ff.h"
+#include "usbh_msc.h"
 
 static int file_read (unsigned char **fbuf, char *name)
 {
@@ -72,7 +72,7 @@ int main (void)
     if(dev_usb ==  1)
     {
       printf("USB disk: ");
-      disk_init(0, &msc_read, &msc_write);
+      disk_init(0, &usbh_msc_read, &usbh_msc_write);
       if(f_mount(&fs, (TCHAR*)"0:", 1) != FR_OK) puts("not support or error");
       else
       {

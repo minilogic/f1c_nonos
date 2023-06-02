@@ -14,7 +14,7 @@ MKSUNXI	= "$(BASE)tools\sunxi\mksunxi"
 
 .PHONY:	all clean run flash
 
-all:	out $(BOOT).bin  $(NAME).bin
+all:	out $(BOOT).bin $(NAME).bin
 	$(CC)size -G out/*.elf
 run:	#all
 	$(FEL) -p spl $(BOOT).bin
