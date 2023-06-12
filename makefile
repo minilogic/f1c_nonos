@@ -14,3 +14,4 @@ all:
 	$(MK) src/usbd/msc
 	$(MK) src/usbh/msc
 	$(MK) src/lwip/httpd
+	$(MK) src/coremark
