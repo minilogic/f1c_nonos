@@ -26,6 +26,7 @@ Low-level framework is simple, but provides the following features:
 | [src/usbd](./src/usbd)           | USB-device examples                        |
 | [src/usbh](./src/usbh)           | USB-host examples                          |
 | [src/lwip](./src/lwip/httpd)     | lwIP over USB-Ethernet adapter RTL8152B    |
+| [src/coremark](./src/coremark)   | CoreMark Benchmark                         |
 | [tools/sunxi](./tools/sunxi)     | Tools for loading and flashing the SOC     |
 | [tools/zadig](./tools/zadig)     | Windows tool for installing SOC-driver     |
 | [tools/iperf](./tools/iperf)     | TCP/IP speed test tool                     |
