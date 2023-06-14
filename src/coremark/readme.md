@@ -25,7 +25,7 @@ Comparison with other popular chips:
 | Chip                                                                   | Freq (MHz) | CoreMark    |
 |------------------------------------------------------------------------|------------|-------------|
 | [F1C100S](./)                                                          | 576        | 1296        |
-| [V3S](./)                                                              | 1008       | 3102        |
+| [V3S](https://github.com/minilogic/v3s_nonos/tree/main/src/coremark)   | 1008       | 3102        |
 | [iMXRT1062](https://www.pjrc.com/store/teensy40_pins.html)             | 600        | 2314        |
 | [ESP32 S2](https://github.com/ochrin/coremark)                         | 80/160/240 | 157/315/472 |
 | [ESP8266](https://github.com/ochrin/coremark)                          | 80         | 191         |
