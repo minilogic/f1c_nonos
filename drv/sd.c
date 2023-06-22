@@ -8,7 +8,7 @@
 #define CMD_SEND_INIT_SEQ (1U << 15)
 #define CMD_WAIT_PRE_OVER (1U << 13)
 #define CMD_STOP_CMD_FLAG (1U << 12)
-#define CMD_STREAM (1U << 11)
+#define CMD_STREAM        (1U << 11)
 #define CMD_TRANS_WRITE   (1U << 10)
 #define CMD_DATA_TRANS    (1U << 9)
 #define CMD_CHK_RESP_CRC  (1U << 8)
@@ -156,7 +156,7 @@ int sd_read (void *ptr, u32 addr, u32 cnt)
   if(!card.cap) return cnt;
   if((u32)ptr & 3)
   {
-    printf("sd_read err: ptr is not aligned (%p %u %u)\n", ptr, addr, cnt);
+    //printf("sd_read: ptr is not aligned (%p %u %u)\n", ptr, addr, cnt);
     buf = malloc(cnt * 512);
     sd_read(buf, addr, cnt);
     memcpy(ptr, buf, cnt * 512);
@@ -182,6 +182,35 @@ int sd_read (void *ptr, u32 addr, u32 cnt)
 
 int sd_write (void *ptr, u32 addr, u32 cnt)
 {
-  puts("sd_write");
-  while(1);
+  uint32_t ctr = cnt * 128, *buf = (uint32_t*)ptr;
+  if(!card.cap) return cnt;
+  if((u32)ptr & 3)
+  {
+    //printf("sd_write: ptr is not aligned (%p %u %u)\n", ptr, addr, cnt);
+    buf = malloc(cnt * 512);
+    memcpy(buf, ptr, cnt * 512);
+    sd_write(buf, addr, cnt);
+    free(buf);
+    return cnt;
+  }
+  SD0->GCTL &= ~0x100;
+  SD0->BYC = cnt * 512;
+  SD0->ARG = card.ccs ? addr : addr * 512;
+  SD0->GCTL |= (1U << 31);
+  SD0->CMD = cnt == 1 ? 24 | CMD_DATA_TRANS | CMD_WAIT_PRE_OVER | CMD_TRANS_WRITE | CMD_LOAD | RES_R1 :
+    25 | CMD_DATA_TRANS | CMD_STOP_CMD_FLAG | CMD_WAIT_PRE_OVER | CMD_TRANS_WRITE | CMD_LOAD | RES_R1;
+  do {
+    if(wait_status(8, 0)) break;
+    SD0->FIFO = *buf++;
+  } while(--ctr);
+  wait_event(4);
+  wait_event(cnt == 1 ? 1 << 3 : 1 << 14);
+  SD0->RIS = 0xFFFFFFFF;
+  SD0->GCTL |= 0x100;
+  for(ctr_us = 0; ctr_us < 10000000; )
+  {
+    cmd(13 + RES_R1, card.rca);
+    if((SD0->RESP0 & 0xF00) == 0x900) return cnt;
+  }
+  return cnt;
 }
