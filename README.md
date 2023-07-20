@@ -35,7 +35,8 @@ Low-level framework is simple, but provides the following features:
 1. [XBOOT](https://github.com/xboot/xboot)
 2. [RT-Thread](https://github.com/RT-Thread/rt-thread)
 3. [F1C100S Projects](https://github.com/nminaylov/F1C100s_projects)
-4. [WhyCan Forum](https://whycan.com/f_17.html)
+4. [F1C200s and F1C100s study](https://github.com/weimingtom/wmt_f1c_study)
+5. [WhyCan Forum](https://whycan.com/f_17.html)
 
 **Disclaimer:**
 The Software is furnished "AS IS", without warranty as to performance or results, and the entire risk as to performance or results is assumed by YOU. I disclaims all warranties, express, implied or otherwise, with regard to the Software, its use, or operation, including without limitation any and all warranties of merchantability, fitness for a particular purpose, and non-infringement of intellectual property rights.
