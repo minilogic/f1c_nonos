@@ -15,3 +15,4 @@ all:
 	$(MK) src/usbh/msc
 	$(MK) src/lwip/httpd
 	$(MK) src/coremark
+	$(MK) src/audio/mp3player
