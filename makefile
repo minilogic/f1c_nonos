@@ -16,3 +16,4 @@ all:
 	$(MK) src/lwip/httpd
 	$(MK) src/coremark
 	$(MK) src/audio/mp3player
+	$(MK) src/audio/mp3recorder

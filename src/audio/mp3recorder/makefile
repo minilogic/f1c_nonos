@@ -1,0 +1,6 @@
+NAME	= out/mp3recorder
+BASE	= ../../../
+DIRS	= . $(BASE)drv $(BASE)lib/mp3enc $(BASE)lib/mp3dec $(BASE)lib/fatfs
+CFLAGS	= -D_IRQ_
+LFLAGS	= --specs=nano.specs
+include $(BASE)common.mk
