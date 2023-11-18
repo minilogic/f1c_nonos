@@ -74,6 +74,7 @@ int main (void)
   GLuint TexObj;
   float i = -15.0, j = ZOOM;
   ZBuffer* frameBuffer = NULL;
+  u32 ctr_zoom, ctr_1s, fps = 0;
   int x, y, ch;
   unsigned char* texture;
   puts("\033[36mF1C100S - TinyGl Textured Cube Demo\033[0m");
@@ -112,18 +113,27 @@ int main (void)
   gluPerspective(35.0, (GLfloat)display->width / display->height, 1.0, 300.0);
   glMatrixMode(GL_MODELVIEW);
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );     
+  ctr_zoom = ctr_ms + 75;
+  ctr_1s = ctr_ms + 1000;
   while(1)
   {
     if(angle < 360.0) angle += 0.2;
     else angle = 0.0;  
     DrawGL(i);
     ZB_copyFrameBuffer(frameBuffer, fb, display->width * sizeof(PIXEL));
-    if(ctr_ms > 75)
+    fps++;
+    if(ctr_ms >= ctr_zoom)
     {
-      ctr_ms = 0;
       if(i <= -10.0) j = ZOOM;
       if(i >= -3.0) j = -ZOOM;
       i += j;
+      ctr_zoom = ctr_ms + 75;
+    }
+    if(ctr_ms >= ctr_1s)
+    {
+      printf("fps:%d \r", fps);
+      fps = 0;
+      ctr_1s = ctr_ms + 1000;
     }
     dev_enable(state_switch() && state_vsys() > 3000 ? 1 : 0);
   }
