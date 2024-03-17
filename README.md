@@ -25,6 +25,7 @@ Low-level framework is simple, but provides the following features:
 | [src/slideshow](./src/slideshow) | µSD & FatFs example (JPG-slideshow)        |
 | [src/usbd](./src/usbd)           | USB-device examples                        |
 | [src/usbh](./src/usbh)           | USB-host examples                          |
+| [src/twi](./src/twi)             | TWI(I2C) examples                          |
 | [src/lwip](./src/lwip/httpd)     | lwIP over USB-Ethernet adapter RTL8152B    |
 | [src/audio](./src/audio)         | Audio examples (MP3 Decoder/Encoder)       |
 | [src/coremark](./src/coremark)   | CoreMark Benchmark                         |
