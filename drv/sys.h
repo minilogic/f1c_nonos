@@ -5,6 +5,7 @@
 #include "display.h"
 #include "vt100.h"
 #include "spi.h"
+#include "twi.h"
 #include "aud.h"
 #include "sd.h"
 

@@ -17,3 +17,4 @@ all:
 	$(MK) src/coremark
 	$(MK) src/audio/mp3player
 	$(MK) src/audio/mp3recorder
+	$(MK) src/twi/rtc
