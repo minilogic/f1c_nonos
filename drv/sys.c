@@ -94,13 +94,12 @@ void __attribute__((interrupt("IRQ"))) irq_handler (void)
 void uart_putc (char c)
 {
   if(c == '\n') uart_putc('\r');
-  while((UART0->LSR & 64) == 0);
-  UART0->THR = c;
+  uart_put(SYS_UART_NUM, c);
 }
 
 int kbhit(void)
 {
-  return UART0->LSR & 1;
+  return uart_rx_check(SYS_UART_NUM) == OK;
 }
 
 int _write (int fd, char *ptr, int len)
@@ -113,7 +112,7 @@ int _write (int fd, char *ptr, int len)
 int _read (int fd, char *ptr, int len)
 {
   while(!kbhit());
-  *ptr = UART0->RBR;
+  *ptr = SYS_UART_NUM->RBR;
   return 1;
 }
 
@@ -142,7 +141,11 @@ void dump (void *ptr, uint16_t len)
 /******************************************************************************/
 struct mem_desc r6_mem_desc[] = {
   { 0x00000000, 0xFFFFFFFF, 0x00000000, RW_NCNB },    /* None cached 4G */
+  #ifdef RAMSIZE64M
+  { 0x80000000, 0x84000000 - 1, 0x80000000, RW_CB },  /* Cached 64M */
+  #else
   { 0x80000000, 0x82000000 - 1, 0x80000000, RW_CB },  /* Cached 32M */
+  #endif
 };
 
 void sys_init (void)
@@ -200,6 +203,8 @@ int state_switch (void)
 
 void dev_enable (int state)
 {
+  PE->CFG0 = (PE->CFG0 & 0xFF0FF0FF) | 0x00000100; // PE2:DEV_EN,PE5:SWITCH_STAT
+  PE->PUL0 = (PE->PUL0 & ~(3 << 10)) | (1 << 10);  // PE5:switch state(pull-up)
   if(state) PE->DAT |= 4;
   else PE->DAT &= ~4;
 }

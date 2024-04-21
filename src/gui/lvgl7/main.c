@@ -8,6 +8,7 @@
 static void display_flush (lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
 {
   layer[0].addr = color_p;
+  disp_sync();
   lay_update(0);
   lv_disp_flush_ready(disp_drv);
 }
@@ -18,7 +19,8 @@ int main (void)
   u16 *fb[2];
   lv_disp_drv_t disp_drv;
   lv_disp_buf_t draw_buf;
-  puts("\033[36mF1C100S - LVGL Demo ("__DATE__" "__TIME__")\033[0m");
+  printf("\033[36mF1C100S - LVGL%d.%d.%d Demo ("__DATE__" "__TIME__")\033[0m",
+          LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR, LVGL_VERSION_PATCH);
   //disp_init(&TV_NTSC, 0);
   disp_init(&TFT_800x480, 0);
   ctr_ms = 0;

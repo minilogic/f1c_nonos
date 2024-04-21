@@ -41,8 +41,10 @@ static uint8_t char_cb (s16 x0, s16 y0, mf_char character, void *state)
 int main (void)
 {
   char str[32];
-  struct TM tm;
   u8 sec = 255;
+  struct TM tm;
+  struct TWI_CFG twi = { .type = TWI_MASTER, .port = SYS_TWI_PORT, .clkmn = TWI_400kHz };
+  struct TWI_DEV rtc = { .bus = SYS_TWI_NUM, .addr = PCF8563_ADDR, .data = &tm };
   puts(CURSOR_HIDE FG_CYAN "F1C100S TWI Example" ATTR_RESET);
   disp_init(&TFT_800x480, 0);
   fb = fb_alloc(display->width, display->height, 16);
@@ -50,25 +52,28 @@ int main (void)
   lay_update(0);
   delay(100);
   disp_backlight(50);
-  twi_enable();
+  twi_init(SYS_TWI_NUM, twi);
   COLOR(31, 31, 31);
   mf_render_aligned(font, display->width / 2, 50, MF_ALIGN_CENTER,
     "TWI RTC Example", 0, &char_cb, NULL);
-  if(rtc_enable()) puts("RTC error");
+  if(pcf8563_init(&rtc)) puts("RTC error");
   #if 0
-  tm.sec = 0x15;
-  tm.min = 0x35;
-  tm.hour = 0x18;
+  tm.sec = 0x00;
+  tm.min = 0x45;
+  tm.hour = 0x13;
   tm.mday = 0x10;
-  tm.wday = 0x05;
-  tm.mon = 0x11;
-  tm.year = 0x23;
-  rtc_write_tm(&tm);
+  tm.wday = 0x03;
+  tm.mon = 0x04;
+  tm.year = 0x24;
+  pcf8563_write_tm(&rtc);
   #endif
   while(1)
   {
-    do rtc_read_tm(&tm);
-    while(sec == tm.sec);
+    while(1)
+    {
+      if(pcf8563_read_tm(&rtc) == OK && sec != tm.sec) break;
+      delay(100);
+    }
     printf("\r\e[33m%02x/%02x/20%02x %02x:%02x:%02x \e[0m",
       tm.mday, tm.mon, tm.year, tm.hour, tm.min, tm.sec);
     disp_sync();

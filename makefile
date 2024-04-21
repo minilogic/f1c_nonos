@@ -4,7 +4,7 @@ all:
 	$(MK) src/demo/torus
 	$(MK) src/demo/voxel
 	$(MK) src/demo/wave
-	$(MK) src/lvgl
+	$(MK) src/gui/lvgl7
 	$(MK) src/slideshow
 	$(MK) src/tinygl/cubetext
 	$(MK) src/tinygl/flag
@@ -18,3 +18,4 @@ all:
 	$(MK) src/audio/mp3player
 	$(MK) src/audio/mp3recorder
 	$(MK) src/twi/rtc
+	$(MK) src/twi/ns2009

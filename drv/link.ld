@@ -1,4 +1,4 @@
-MEMORY { ram : org = 0x80000000, len = 32M }
+MEMORY { ram : org = 0x80000000, len = RAMSIZE }
 
 stack_und = ORIGIN(ram) + LENGTH(ram) - 0x10000;
 stack_abt = stack_und - 0x10000;

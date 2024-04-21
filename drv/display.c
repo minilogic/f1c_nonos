@@ -136,9 +136,12 @@ u8 disp_backlight (u8 x)
 {
   if(display->ctrl < 2) x = 0;
   if(x > 100) x = 100;
+  #ifdef MANGO_BOARD
+  #else
   PA->CFG0 = (PA->CFG0 & ~0x0F00) | 0x0300;
   PWM->CTRL = 0x070;
   PWM->CH0_PERIOD = (100 << 16) | x;
+  #endif
   return x;
 }
 

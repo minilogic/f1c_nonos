@@ -3,11 +3,25 @@
 
 #include "f1c100s.h"
 #include "display.h"
+#include "rgb565.h"
 #include "vt100.h"
+#include "uart.h"
 #include "spi.h"
 #include "twi.h"
 #include "aud.h"
 #include "sd.h"
+
+#ifdef MANGO_BOARD
+#define SYS_UART_NUM  UART1
+#define SYS_UART_PORT UART1_PA
+#define SYS_TWI_NUM   TWI0
+#define SYS_TWI_PORT  TWI0_PD
+#else
+#define SYS_UART_NUM  UART0
+#define SYS_UART_PORT UART0_PE
+#define SYS_TWI_NUM   TWI0
+#define SYS_TWI_PORT  TWI0_PE
+#endif
 
 #define ctr_us  (TIM->AVS_CNT0)
 #define ctr_ms  (TIM->AVS_CNT1)

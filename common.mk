@@ -4,11 +4,17 @@ SRCH	= $(foreach dir,$(DIRS) $(DIRD),$(wildcard $(dir)/*.h))
 OBJS	= $(patsubst %.c,out/%.o,$(notdir $(SRCS) $(CSRCS)))
 vpath %.c $(dir $(SRCS))
 
+RAMSIZE = 32M
+#RAMSIZE = 64M
+BRD	= DBC_BOARD
+#BRD	= MANGO_BOARD
+
 CC      = arm-none-eabi-
 CFLAGS  += $(addprefix -I,$(DIRS)) -c -O3 -mcpu=arm926ej-s \
-	-ffunction-sections -fdata-sections \
-	-MMD -MT$@ -Wall -Wformat=0 -DARM
-LFLAGS	+= -lm -Xlinker --gc-sections -Wl,-Map,$(NAME).map -T$(BASE)drv/
+	-ffunction-sections -fdata-sections -fno-builtin-function \
+	-MMD -MT$@ -Wall -Wformat=0 -DARM -DRAMSIZE$(RAMSIZE) -D$(BRD)
+LFLAGS	+= -lm -Xlinker --gc-sections -Wl,-Map,$(NAME).map \
+	-Wl,--defsym=RAMSIZE=$(RAMSIZE) -T$(BASE)drv/
 FEL	= "$(BASE)tools\sunxi\sunxi-fel"
 MKSUNXI	= "$(BASE)tools\sunxi\mksunxi"
 
@@ -16,13 +22,13 @@ MKSUNXI	= "$(BASE)tools\sunxi\mksunxi"
 
 all:	out $(BOOT).bin $(NAME).bin
 	$(CC)size -G out/*.elf
-run:	#all
+run:	all
 	$(FEL) -p spl $(BOOT).bin
 	$(FEL) -p write 0x80000000 $(NAME).bin
 	$(FEL) exec 0x80000000
-flash:	#all
+flash:	all
 	$(FEL) -p spiflash-write 0 $(BOOT).bin
-	$(FEL) -p spiflash-write 4096 $(NAME).bin
+	$(FEL) -p spiflash-write 8192 $(NAME).bin
 build:	clean all
 	rm -fr out/*.d* out/*.e* out/*.m* out/*.o*
 $(NAME).bin: $(NAME).elf
