@@ -20,12 +20,12 @@ Low-level framework is simple, but provides the following features:
 | [drv](./drv)                     | Low-level drivers                          |
 | [lib](./lib)                     | Third-party libraries                      |
 | [src/demo](./src/demo)           | Classical demo effects                     |
-| [src/lvgl](./src/lvgl)           | LVGL GUI-demo                              |
+| [src/gui](./src/gui)             | LVGL GUI-demo (LVGL7, LVGL9)               |
 | [src/tinygl](./src/tinygl)       | TinyGl 3D-demo examples                    |
 | [src/slideshow](./src/slideshow) | µSD & FatFs example (JPG-slideshow)        |
 | [src/usbd](./src/usbd)           | USB-device examples                        |
 | [src/usbh](./src/usbh)           | USB-host examples                          |
-| [src/twi](./src/twi)             | TWI(I2C) examples                          |
+| [src/twi](./src/twi)             | TWI(I2C) examples (RTC, TS)                |
 | [src/lwip](./src/lwip/httpd)     | lwIP over USB-Ethernet adapter RTL8152B    |
 | [src/audio](./src/audio)         | Audio examples (MP3 Decoder/Encoder)       |
 | [src/coremark](./src/coremark)   | CoreMark Benchmark                         |
