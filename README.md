@@ -33,6 +33,9 @@ Low-level framework is simple, but provides the following features:
 | [tools/zadig](./tools/zadig)     | Windows tool for installing SOC-driver     |
 | [tools/iperf](./tools/iperf)     | TCP/IP speed test tool                     |
 
+**Building:**
+The project was built using make and gcc. The processor and platform type is specified in the [common.mk](https://github.com/minilogic/f1c_nonos/blob/main/common.mk) file. The RAMSIZE variable can be 32M or 64M and specifies the F1C100S or F1C200S processor respectively. If the variable BRD=DBC_BOARD, then the f1c_dbc or LicheePi board can be used. If BRD=MANGO_BOARD, then MangoPi or CherryPi.
+
 **Useful links:**
 1. [XBOOT](https://github.com/xboot/xboot)
 2. [RT-Thread](https://github.com/RT-Thread/rt-thread)
