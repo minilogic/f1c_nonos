@@ -9,6 +9,7 @@ all:
 	$(MK) src/demo/voxel
 	$(MK) src/demo/wave
 	$(MK) src/gui/lvgl7
+	$(MK) src/gui/lvgl9
 	$(MK) src/irq
 	$(MK) src/lwip/httpd
 	$(MK) src/slideshow

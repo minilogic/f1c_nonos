@@ -64,6 +64,7 @@ int main (void)
   unsigned char *fbuf;
   int fsize;
   puts("\033[36mF1C100S - USBH MSC\033[0m");
+  printf("Press any key\r"); getchar(); printf(CLR_EOL);
   usb_mux(USB_MUX_HOST);
   usbh_init();
   while(1)
