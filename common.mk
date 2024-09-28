@@ -22,7 +22,7 @@ MKSUNXI	= "$(BASE)tools\sunxi\mksunxi"
 
 all:	out $(BOOT).bin $(NAME).bin
 	$(CC)size -G out/*.elf
-run:	all
+run:	#all
 	$(FEL) -p spl $(BOOT).bin
 	$(FEL) -p write 0x80000000 $(NAME).bin
 	$(FEL) exec 0x80000000

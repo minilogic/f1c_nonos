@@ -33,7 +33,7 @@ void twi_write_start (TWI_T *TWI, char dev_addr, char reg_addr);
 void twi_read_start (TWI_T *TWI, char dev_addr, char reg_addr);
 
 /* RTC PCF8563 (BM8563) */
-#define PCF8563_ADDR  0xA2
+#define PCF8563_ADDR 0xA2
 
 struct TM {
   u8  sec;      // 00:59
@@ -51,19 +51,38 @@ int pcf8563_read_tm (struct TWI_DEV *dev);
 int pcf8563_write_tm (struct TWI_DEV *dev);
 
 /* TS NS2009 */
-#define NS2009_ADDR0  0x90
-#define NS2009_ADDR1  0x91
-#define NS2009_TS_INIT { 0, 0, 0, 150, 3960, 140, 3800, 80 }
+#define NS2009_ADDR 0x90
+#define NS2009_TS_INIT { 150, 3960, 140, 3800, 80 }
 
-struct TS {
-  u32 x, y, z;  // X, Y - real coordinates, Z - touch history
+struct TS_NS2009 {
   u32 x1, x2;   // X - borders
   u32 y1, y2;   // Y - borders
   u32 dz;       // Z - threshold
   u32 bufx[5];  // X - fifo buffer
   u32 bufy[5];  // Y - fifo buffer
+  u32 x, y, z;  // X, Y - real coordinates, Z - touch history
 };
 
 int ns2009_read (struct TWI_DEV *dev);
+
+/* TS GT911 */
+#if 1
+#define GT911_ADDR 0xBA
+#else
+#define GT911_ADDR 0x28
+#endif
+#define GT911_TS_INIT { 0, 799, 0, 479 };
+
+struct TS_GT911 {
+  u32 x1, x2;   // X - borders
+  u32 y1, y2;   // Y - borders
+  struct {
+    u32 x, y, z;// X, Y - real coordinates, Z - point size
+  } pt[5];
+};
+
+int gt911_rd (struct TWI_DEV *dev, u16 addr, void *dat, u32 len);
+int gt911_wr (struct TWI_DEV *dev, u16 addr, void *dat, u32 len);
+int gt911_read (struct TWI_DEV *dev);
 
 #endif

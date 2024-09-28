@@ -278,21 +278,78 @@ static int ns2009_rd (struct TWI_DEV *dev, u8 cmd, u32 *dat)
 int ns2009_read (struct TWI_DEV *dev)
 {
   u32 x, y, z;
-  struct TS *ts = (struct TS *)dev->data;
-  if(ns2009_rd(dev, NS2009_RD_Z1, &z) == KO) return KO;
-  if(ns2009_rd(dev, NS2009_RD_X, &x) == KO) return KO;
-  if(ns2009_rd(dev, NS2009_RD_Y, &y) == KO) return KO;
+  struct TS_NS2009 *ts = (struct TS_NS2009 *)dev->data;
+  if(ns2009_rd(dev, NS2009_RD_Z1, &z) == KO) return 0;
+  if(ns2009_rd(dev, NS2009_RD_X, &x) == KO) return 0;
+  if(ns2009_rd(dev, NS2009_RD_Y, &y) == KO) return 0;
   ts->z <<= 1;
-  if(z < ts->dz) return KO;
+  if(z < ts->dz) return 0;
   ts->z |= 1;
+  //printf("%03d %03d %03d\r", x, y, z);
   if(x < ts->x1) x = ts->x1; else if(x > ts->x2) x = ts->x2;
   if(y < ts->y1) y = ts->y1; else if(y > ts->y2) y = ts->y2;
   x = (x - ts->x1) * (display->width - 1) / (ts->x2 - ts->x1);
   y = (y - ts->y1) * (display->height - 1) / (ts->y2 - ts->y1);
   ts_buf_update(ts->bufx, x);
   ts_buf_update(ts->bufy, y);
-  if((ts->z & 0x1F) != 0x1F) return KO;
+  if((ts->z & 0x1F) != 0x1F) return 0;
   ts->x = ts_get_median(ts->bufx);
   ts->y = display->height - ts_get_median(ts->bufy);
-  return OK;
+  return 1;
+}
+
+/*******************************************************************************
+                                TS GT911
+*******************************************************************************/
+int gt911_rd (struct TWI_DEV *dev, u16 addr, void *dat, u32 len)
+{
+  u8 buf[2] = { addr >> 8, addr };
+  twi_start(dev->bus, dev->addr & 0xFE);
+  twi_send(dev->bus, buf, 2);
+  twi_stop(dev->bus);
+  if(!twi_error)
+  {
+    twi_start(dev->bus, dev->addr | 1);
+    twi_recv(dev->bus, dat, len);
+    twi_stop(dev->bus);
+  }
+  return twi_error ? KO : OK;
+}
+
+int gt911_wr (struct TWI_DEV *dev, u16 addr, void *dat, u32 len)
+{
+  u8 buf[2] = { addr >> 8, addr };
+  twi_start(dev->bus, dev->addr & 0xFE);
+  twi_send(dev->bus, buf, 2);
+  twi_send(dev->bus, dat, 1);
+  twi_stop(dev->bus);
+  return twi_error ? KO : OK;
+}
+
+int gt911_read (struct TWI_DEV *dev)
+{
+  u8 stat;
+  u16 x, y, z;
+  struct TS_GT911 *ts = (struct TS_GT911 *)dev->data;
+  if(gt911_rd(dev, 0x814e, &stat, sizeof(stat)) == KO) return 0;
+  if(!(stat & 0x80)) return 0;
+  stat &= 15;
+  for(int addr = 0x8150, i = 0; i < stat; i++)
+  {
+    if(gt911_rd(dev, addr, &x, sizeof(x)) == KO) return 0;
+    if(gt911_rd(dev, addr + 2, &y, sizeof(y)) == KO) return 0;
+    if(gt911_rd(dev, addr + 4, &z, sizeof(z)) == KO) return 0;
+    addr += 8;
+    //printf("pt%d:%d*%d*%d ", i, x, y, z);
+    if(x < ts->x1) x = ts->x1; else if(x > ts->x2) x = ts->x2;
+    if(y < ts->y1) y = ts->y1; else if(y > ts->y2) y = ts->y2;
+    x = (x - ts->x1) * (display->width - 1) / (ts->x2 - ts->x1);
+    y = (y - ts->y1) * (display->height - 1) / (ts->y2 - ts->y1);
+    ts->pt[i].x = x;
+    ts->pt[i].y = y;
+    ts->pt[i].z = z;
+  }
+  z = 0;
+  gt911_wr(dev, 0x814e, &z, 1);
+  return stat;
 }

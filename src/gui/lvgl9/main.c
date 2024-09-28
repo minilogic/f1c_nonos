@@ -3,18 +3,32 @@
 #include "lvgl.h"
 #include "lv_demos.h"
 
-struct TS ts = NS2009_TS_INIT;
-struct TWI_DEV ts_dev = { .bus = SYS_TWI_NUM, .addr = NS2009_ADDR0, .data = &ts };
+#define GT911
+
+#ifdef GT911
+struct TS_GT911 ts = GT911_TS_INIT;
+struct TWI_DEV ts_dev = { .bus = SYS_TWI_NUM, .addr = GT911_ADDR, .data = &ts };
+#else
+struct TS_NS2009 ts = NS2009_TS_INIT;
+struct TWI_DEV ts_dev = { .bus = SYS_TWI_NUM, .addr = NS2009_ADDR, .data = &ts };
+#endif
 struct TWI_CFG twi = { .type = TWI_MASTER, .port = SYS_TWI_PORT, .clkmn = TWI_400kHz };
 
 u16 *fb;
 
 static void ts_read (lv_indev_t *indev, lv_indev_data_t *data)
 {
-  if(ns2009_read(&ts_dev) == OK)
+#ifdef GT911
+  if(gt911_read(&ts_dev) == 1)
+  {
+    data->point.x = ts.pt[0].x;
+    data->point.y = ts.pt[0].y;
+#else
+  if(ns2009_read(&ts_dev) == 1)
   {
     data->point.x = ts.x;
     data->point.y = ts.y;
+#endif
     data->state = LV_INDEV_STATE_PRESSED;
   }
   else data->state = LV_INDEV_STATE_RELEASED;
@@ -53,7 +67,7 @@ int main (void)
   lay_update(0);
   delay(100);
   twi_init(SYS_TWI_NUM, twi);
-  disp_backlight(90);
+  disp_backlight(100);
 
   lv_init();
   lv_tick_set_cb(get_ms);

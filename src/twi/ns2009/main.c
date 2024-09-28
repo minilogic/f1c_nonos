@@ -2,8 +2,8 @@
 #include <string.h>
 #include "sys.h"
 
-struct TS ts = NS2009_TS_INIT;
-struct TWI_DEV ts_dev = { .bus = SYS_TWI_NUM, .addr = NS2009_ADDR0, .data = &ts };
+struct TS_NS2009 ts = NS2009_TS_INIT;
+struct TWI_DEV ts_dev = { .bus = SYS_TWI_NUM, .addr = NS2009_ADDR, .data = &ts };
 struct TWI_CFG twi = { .type = TWI_MASTER, .port = SYS_TWI_PORT, .clkmn = TWI_400kHz };
 
 int def_col[] = { RGB565_GRAY, RGB565_BLACK, RGB565_AZURE, RGB565_BLUE,

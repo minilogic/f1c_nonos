@@ -26,7 +26,7 @@ void lwiperf_report(void *arg, enum lwiperf_report_type report_type,
 
 int main (void)
 {
-  puts("\e[36mF1C100S USBH & RTL8152B & LWIP-"LWIP_VERSION_STRING"\e[0m");
+  puts(FG_CYAN "F1C100S USBH & RTL8152B & LWIP-"LWIP_VERSION_STRING"" ATTR_RESET);
   usb_mux(USB_MUX_HOST);
   usbh_init();
   lwip_init();

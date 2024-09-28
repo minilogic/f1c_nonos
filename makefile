@@ -19,6 +19,7 @@ all:
 	$(MK) src/tinygl/flag
 	$(MK) src/tinygl/wave
 	$(MK) src/twi/ns2009
+	$(MK) src/twi/gt911
 	$(MK) src/twi/rtc
 	$(MK) src/usbd/msc
 	$(MK) src/usbh/msc
