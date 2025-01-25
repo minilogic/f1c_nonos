@@ -25,6 +25,10 @@ struct LAY {
   u32 attr1;
 };
 
+#define LAY_RGB565  (5 << 8)
+#define LAY_RGB888  (9 << 8)
+#define LAY_ARGB888 (10 << 8)
+
 extern struct LAY layer[4];
 extern struct DISP *display;
 extern struct DISP TV_PAL;

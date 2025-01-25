@@ -53,17 +53,16 @@ static u32 get_ms (void)
 
 int main (void)
 {
-  u8 *lv_buf[2];
+  u8 *lv_buf;
   u32 lv_buf_size;
   lv_display_t  *disp_drv;
   lv_indev_t    *indev_drv;
-  printf(FG_CYAN "F1C100S - LVGL_%d.%d.%d ("__DATE__" "__TIME__")" ATTR_RESET,
+  printf(FG_CYAN "F1C100S - LVGL_%d.%d.%d\n" ATTR_RESET,
          LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR, LVGL_VERSION_PATCH);
-  //disp_init(&TV_NTSC, 0);
   disp_init(&TFT_800x480, 0);
   ctr_ms = 0;
   fb = fb_alloc(display->width, display->height, 16);
-  lay_config(0, display->width, display->height, 0, 0, 16, fb, 0, 5 << 8);
+  lay_config(0, display->width, display->height, 0, 0, 16, fb, 0, LAY_RGB565);
   lay_update(0);
   delay(100);
   twi_init(SYS_TWI_NUM, twi);
@@ -73,9 +72,9 @@ int main (void)
   lv_tick_set_cb(get_ms);
   disp_drv = lv_display_create(display->width, display->height);
   lv_display_set_flush_cb(disp_drv, display_flush);
-  lv_buf_size = display->width * display->height * lv_color_format_get_size(LV_COLOR_FORMAT_NATIVE);
-  lv_buf[0] = malloc(lv_buf_size);
-  lv_display_set_buffers(disp_drv, lv_buf[0], NULL, lv_buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
+  lv_buf_size = display->width * display->height * 2;
+  lv_buf = malloc(lv_buf_size);
+  lv_display_set_buffers(disp_drv, lv_buf, NULL, lv_buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
 
   indev_drv = lv_indev_create();
   lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
@@ -85,6 +84,9 @@ int main (void)
   //lv_demo_music();
   //lv_demo_stress();
   //lv_demo_benchmark();
+  //lv_demo_scroll();
+  //lv_demo_multilang();
+  //lv_demo_transform();
   while(1)
   {
     lv_task_handler();

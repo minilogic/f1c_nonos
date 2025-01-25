@@ -7,6 +7,7 @@
  *      INCLUDES
  *********************/
 
+#include "../../misc/lv_area_private.h"
 #include "lv_draw_vg_lite.h"
 
 #if LV_USE_DRAW_VG_LITE
@@ -46,36 +47,25 @@
 
 void lv_draw_vg_lite_fill(lv_draw_unit_t * draw_unit, const lv_draw_fill_dsc_t * dsc, const lv_area_t * coords)
 {
-    if(dsc->opa <= LV_OPA_MIN) {
-        return;
-    }
-
     lv_draw_vg_lite_unit_t * u = (lv_draw_vg_lite_unit_t *)draw_unit;
 
     lv_area_t clip_area;
-    if(!_lv_area_intersect(&clip_area, coords, draw_unit->clip_area)) {
+    if(!lv_area_intersect(&clip_area, coords, draw_unit->clip_area)) {
         /*Fully clipped, nothing to do*/
         return;
     }
 
     LV_PROFILER_BEGIN;
 
-    vg_lite_matrix_t matrix;
-    vg_lite_identity(&matrix);
-    lv_vg_lite_matrix_multiply(&matrix, &u->global_matrix);
-
-    int32_t w = lv_area_get_width(coords);
-    int32_t h = lv_area_get_height(coords);
-    float r = dsc->radius;
-    if(dsc->radius) {
-        float r_short = LV_MIN(w, h) / 2.0f;
-        r = LV_MIN(r, r_short);
-    }
+    vg_lite_matrix_t matrix = u->global_matrix;
 
     lv_vg_lite_path_t * path = lv_vg_lite_path_get(u, VG_LITE_FP32);
     lv_vg_lite_path_set_quality(path, dsc->radius == 0 ? VG_LITE_LOW : VG_LITE_HIGH);
     lv_vg_lite_path_set_bonding_box_area(path, &clip_area);
-    lv_vg_lite_path_append_rect(path, coords->x1, coords->y1, w, h, r, r);
+    lv_vg_lite_path_append_rect(path,
+                                coords->x1, coords->y1,
+                                lv_area_get_width(coords), lv_area_get_height(coords),
+                                dsc->radius);
     lv_vg_lite_path_end(path);
 
     vg_lite_path_t * vg_lite_path = lv_vg_lite_path_get_path(path);
@@ -85,17 +75,19 @@ void lv_draw_vg_lite_fill(lv_draw_unit_t * draw_unit, const lv_draw_fill_dsc_t *
     LV_VG_LITE_ASSERT_MATRIX(&matrix);
 
     if(dsc->grad.dir != LV_GRAD_DIR_NONE) {
-        vg_lite_matrix_t grad_matrix;
-        lv_vg_lite_grad_area_to_matrix(&grad_matrix, coords, dsc->grad.dir);
-        lv_vg_lite_draw_linear_grad(
+#if LV_USE_VECTOR_GRAPHIC
+        lv_vg_lite_draw_grad_helper(
             u,
             &u->target_buffer,
             vg_lite_path,
+            coords,
             &dsc->grad,
-            &grad_matrix,
             &matrix,
             VG_LITE_FILL_EVEN_ODD,
             VG_LITE_BLEND_SRC_OVER);
+#else
+        LV_LOG_WARN("Gradient fill is not supported without VECTOR_GRAPHIC");
+#endif
     }
     else { /* normal fill */
         vg_lite_color_t color = lv_vg_lite_color(dsc->color, dsc->opa, true);

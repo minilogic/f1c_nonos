@@ -59,7 +59,7 @@
 
 ## Configure Demos Entry
 
-"demos/lv_demos.c" provides `lv_demos_create` and `lv_demos_usage` to simplify the creation of demos.
+"demos/lv_demos.c" provides `lv_demos_create` and `lv_demos_show_help` to simplify the creation of demos.
 
 If you build your main program named `lv_demos`, then you can run the widgets demo by running `lv_demos widgets` and the benchmark demo by running `lv_demos benchmark 1`.
 
@@ -71,9 +71,9 @@ For example:
 #include "demos/lv_demos.h"
 
 ...
-static lv_disp_t* hal_init(void)
+static lv_display_t* hal_init(void)
 {
-  lv_disp_t* disp = NULL;
+  lv_display_t* disp = NULL;
 
   ...
   /* TODO: init display and indev */
@@ -86,14 +86,14 @@ int main(int argc, char ** argv)
 {
   lv_init();
 
-  lv_disp_t* disp = hal_init();
+  lv_display_t* disp = hal_init();
   if (disp == NULL) {
     LV_LOG_ERROR("lv_demos initialization failure!");
     return 1;
   }
 
   if (!lv_demos_create(&argv[1], argc - 1)) {
-    lv_demos_usage();
+    lv_demos_show_help();
     goto demo_end;
   }
 
@@ -122,7 +122,7 @@ See in [widgets](https://github.com/lvgl/lvgl/tree/master/demos/widgets) folder.
 For running this demo properly, please make sure **LV_MEM_SIZE** is at least **38KB** (and **48KB** is recommended):
 
 ```c
-#define LV_MEME_SIZE    (38ul * 1024ul)
+#define LV_MEM_SIZE    (38ul * 1024ul)
 ```
 
 
